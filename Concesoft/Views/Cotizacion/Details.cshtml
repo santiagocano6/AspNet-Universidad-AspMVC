@@ -1,0 +1,42 @@
+﻿@model Concesoft.Models.CotizacionModels
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CotizacionModels</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ClienteModels.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClienteModels.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioModels.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioModels.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ValorTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ValorTotal)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

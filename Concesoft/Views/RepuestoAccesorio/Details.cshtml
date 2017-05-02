@@ -1,0 +1,50 @@
+﻿@model Concesoft.Models.RepuestoAccesorioModels
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>RepuestoAccesorioModels</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreArticulo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreArticulo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CantidadDisponible)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CantidadDisponible)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Valor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Valor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.RepuestoAccesorioId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Concesoft.Models.VehiculoModels>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NombreVehiculo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CantidadDisponible)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Valor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumeroPuertas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Color)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Marca)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TipoAuto)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NombreVehiculo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CantidadDisponible)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Valor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumeroPuertas)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Color)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Marca)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoAuto)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.VehiculoId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.VehiculoId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.VehiculoId })
+        </td>
+    </tr>
+}
+
+</table>

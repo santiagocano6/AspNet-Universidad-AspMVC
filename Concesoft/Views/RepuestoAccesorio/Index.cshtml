@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Concesoft.Models.RepuestoAccesorioModels>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NombreArticulo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CantidadDisponible)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Valor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tipo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NombreArticulo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CantidadDisponible)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Valor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tipo)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.RepuestoAccesorioId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RepuestoAccesorioId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RepuestoAccesorioId })
+        </td>
+    </tr>
+}
+
+</table>
