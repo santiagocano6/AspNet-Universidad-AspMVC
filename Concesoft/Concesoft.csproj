@@ -170,8 +170,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
-    <Compile Include="Controllers\CotizacionController.cs" />
-    <Compile Include="Controllers\DetalleCotizacionController.cs" />
     <Compile Include="Controllers\DetalleFacturaController.cs" />
     <Compile Include="Controllers\FacturaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -192,6 +190,18 @@
     <Compile Include="Migrations\201705020302595_2.cs" />
     <Compile Include="Migrations\201705020302595_2.Designer.cs">
       <DependentUpon>201705020302595_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705072043072_3.cs" />
+    <Compile Include="Migrations\201705072043072_3.Designer.cs">
+      <DependentUpon>201705072043072_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705072049151_4.cs" />
+    <Compile Include="Migrations\201705072049151_4.Designer.cs">
+      <DependentUpon>201705072049151_4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705072217211_5.cs" />
+    <Compile Include="Migrations\201705072217211_5.Designer.cs">
+      <DependentUpon>201705072217211_5.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -215,9 +225,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Recursos\Carro1.jpg" />
+    <Content Include="Recursos\Carro2.jpg" />
+    <Content Include="Recursos\Carro3.jpg" />
+    <Content Include="Recursos\Carro4.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\general.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -273,11 +288,6 @@
     <Content Include="Views\RepuestoAccesorio\Details.cshtml" />
     <Content Include="Views\RepuestoAccesorio\Edit.cshtml" />
     <Content Include="Views\RepuestoAccesorio\Index.cshtml" />
-    <Content Include="Views\DetalleCotizacion\Create.cshtml" />
-    <Content Include="Views\DetalleCotizacion\Delete.cshtml" />
-    <Content Include="Views\DetalleCotizacion\Details.cshtml" />
-    <Content Include="Views\DetalleCotizacion\Edit.cshtml" />
-    <Content Include="Views\DetalleCotizacion\Index.cshtml" />
     <Content Include="Views\DetalleFactura\Create.cshtml" />
     <Content Include="Views\DetalleFactura\Delete.cshtml" />
     <Content Include="Views\DetalleFactura\Details.cshtml" />
@@ -293,11 +303,7 @@
     <Content Include="Views\Factura\Details.cshtml" />
     <Content Include="Views\Factura\Edit.cshtml" />
     <Content Include="Views\Factura\Index.cshtml" />
-    <Content Include="Views\Cotizacion\Create.cshtml" />
-    <Content Include="Views\Cotizacion\Delete.cshtml" />
-    <Content Include="Views\Cotizacion\Details.cshtml" />
-    <Content Include="Views\Cotizacion\Edit.cshtml" />
-    <Content Include="Views\Cotizacion\Index.cshtml" />
+    <Content Include="Views\DetalleFactura\_ArticulosFactura.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -319,6 +325,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705020302595_2.resx">
       <DependentUpon>201705020302595_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705072043072_3.resx">
+      <DependentUpon>201705072043072_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705072049151_4.resx">
+      <DependentUpon>201705072049151_4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705072217211_5.resx">
+      <DependentUpon>201705072217211_5.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

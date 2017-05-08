@@ -12,8 +12,9 @@ namespace Concesoft.Models
 
         [Required]
         [Display(Name = "Usuario")]
-        public int UsuarioId { get; set; }
-        public virtual UsuarioModels UsuarioModels { get; set; }
+        public string UsuarioId { get; set; }
+        [ForeignKey("UsuarioId")]
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
         [Required]
         [Display(Name = "Cliente")]

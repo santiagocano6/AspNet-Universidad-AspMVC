@@ -16,6 +16,16 @@
     white-space: normal;
 }
 
+.slideFotos {
+    display: none;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.slideFotos#inicio {
+    display: inline-block;
+}
+
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
@@ -30,4 +40,12 @@ th{
 
 tr:hover {
     background-color: #dbdbdb !important;
+}
+
+.form-factura .form-factura {
+    display: inline-block;
+}
+
+.form-factura .form-factura div {
+    width: 40px;
 }

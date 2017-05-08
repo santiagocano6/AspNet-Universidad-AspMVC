@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.ClienteModels.Nombre)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UsuarioModels.Nombre)
+            @Html.DisplayNameFor(model => model.ApplicationUser.Nombre)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ValorTotal)
@@ -29,15 +29,13 @@
             @Html.DisplayFor(modelItem => item.ClienteModels.Nombre)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.UsuarioModels.Nombre)
+            @Html.DisplayFor(modelItem => item.ApplicationUser.Nombre)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ValorTotal)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id })
         </td>
     </tr>
 }

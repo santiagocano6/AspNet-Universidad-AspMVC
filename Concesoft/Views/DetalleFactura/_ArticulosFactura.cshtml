@@ -1,14 +1,5 @@
-﻿@model IEnumerable<Concesoft.Models.DetalleCotizacionModels>
+﻿@model IEnumerable<Concesoft.Models.DetalleFacturaModels>
 
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -18,7 +9,7 @@
             @Html.DisplayNameFor(model => model.VehiculoModels.NombreVehiculo)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CotizacionId)
+            @Html.DisplayNameFor(model => model.FacturaId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Cantidad)
@@ -38,7 +29,7 @@
             @Html.DisplayFor(modelItem => item.VehiculoModels.NombreVehiculo)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CotizacionId)
+            @Html.DisplayFor(modelItem => item.FacturaId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Cantidad)
@@ -47,9 +38,25 @@
             @Html.DisplayFor(modelItem => item.ValorTotal)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink(
+                linkText: "Editar",
+                actionName: "Edit",
+                controllerName: "DetalleFactura",
+                routeValues: new
+                {
+                    id = item.Id
+                },
+                htmlAttributes: null)
+
+            @Html.ActionLink(
+                linkText: "Eliminar",
+                actionName: "Delete",
+                controllerName: "DetalleFactura",
+                routeValues: new
+                {
+                    id = item.Id
+                },
+                htmlAttributes: null)
         </td>
     </tr>
 }

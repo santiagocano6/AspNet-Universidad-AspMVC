@@ -148,7 +148,16 @@ namespace Concesoft.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Cedula = model.Cedula,
+                    Nombre = model.Nombre,
+                    Ciudad = model.Ciudad,
+                    Direccion = model.Direccion,
+                    Rol = model.Rol,
+                    Telefono = model.Telefono
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

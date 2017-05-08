@@ -66,7 +66,15 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(
+        linkText: "Volver a la factura",
+        actionName: "Edit",
+        controllerName: "Factura",
+        routeValues: new
+        {
+            id = Model.FacturaId
+        },
+        htmlAttributes: null)
 </div>
 
 @section Scripts {

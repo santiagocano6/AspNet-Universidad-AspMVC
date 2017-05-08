@@ -3,12 +3,22 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web.Mvc;
 using Concesoft.Models;
+using System.Collections;
+using System.Linq;
 
 namespace Concesoft.Controllers
 {
     public class DetalleFacturaController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        
+        public IEnumerable _ArticulosFactura(int facturaId)
+        {
+            return db.DetalleFacturaModels
+                .Where(x => x.FacturaId == facturaId)
+                .Include(d => d.RepuestoAccesorioModels)
+                .Include(x => x.VehiculoModels);
+        }
 
         // GET: DetalleFactura
         public async Task<ActionResult> Index()
@@ -33,8 +43,9 @@ namespace Concesoft.Controllers
         }
 
         // GET: DetalleFactura/Create
-        public ActionResult Create()
+        public ActionResult Create(int facturaId)
         {
+            ViewBag.FacturaId = facturaId;
             ViewBag.RepuestoAccesorioId = new SelectList(db.RepuestoAccesorioModels, "RepuestoAccesorioId", "NombreArticulo");
             ViewBag.VehiculoId = new SelectList(db.VehiculoModels, "VehiculoId", "NombreVehiculo");
             return View();
@@ -56,7 +67,7 @@ namespace Concesoft.Controllers
 
             ViewBag.RepuestoAccesorioId = new SelectList(db.RepuestoAccesorioModels, "RepuestoAccesorioId", "NombreArticulo", detalleFacturaModels.RepuestoAccesorioId);
             ViewBag.VehiculoId = new SelectList(db.VehiculoModels, "VehiculoId", "NombreVehiculo", detalleFacturaModels.VehiculoId);
-            return View(detalleFacturaModels);
+            return RedirectToAction("Edit/" + detalleFacturaModels.FacturaId, "Factura");
         }
 
         // GET: DetalleFactura/Edit/5
@@ -67,6 +78,7 @@ namespace Concesoft.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             DetalleFacturaModels detalleFacturaModels = await db.DetalleFacturaModels.FindAsync(id);
+            ViewBag.FacturaId = detalleFacturaModels.FacturaId;
             if (detalleFacturaModels == null)
             {
                 return HttpNotFound();
@@ -91,7 +103,7 @@ namespace Concesoft.Controllers
             }
             ViewBag.RepuestoAccesorioId = new SelectList(db.RepuestoAccesorioModels, "RepuestoAccesorioId", "NombreArticulo", detalleFacturaModels.RepuestoAccesorioId);
             ViewBag.VehiculoId = new SelectList(db.VehiculoModels, "VehiculoId", "NombreVehiculo", detalleFacturaModels.VehiculoId);
-            return View(detalleFacturaModels);
+            return Content(Url.Action("Edit", "Factura"));//RedirectToAction("Edit", "Factura");
         }
 
         // GET: DetalleFactura/Delete/5
@@ -102,6 +114,7 @@ namespace Concesoft.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             DetalleFacturaModels detalleFacturaModels = await db.DetalleFacturaModels.FindAsync(id);
+            ViewBag.FacturaId = detalleFacturaModels.FacturaId;
             if (detalleFacturaModels == null)
             {
                 return HttpNotFound();
@@ -115,9 +128,10 @@ namespace Concesoft.Controllers
         public async Task<ActionResult> DeleteConfirmed(long id)
         {
             DetalleFacturaModels detalleFacturaModels = await db.DetalleFacturaModels.FindAsync(id);
+            int facturaId = detalleFacturaModels.FacturaId;
             db.DetalleFacturaModels.Remove(detalleFacturaModels);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit/" + detalleFacturaModels.FacturaId, "Factura");
         }
 
         protected override void Dispose(bool disposing)

@@ -11,6 +11,7 @@ namespace Concesoft.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Vehiculo
+        [Authorize]
         public async Task<ActionResult> Index()
         {
             return View(await db.VehiculoModels.ToListAsync());

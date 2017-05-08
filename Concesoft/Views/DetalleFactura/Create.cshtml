@@ -7,10 +7,10 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>DetalleFacturaModels</h4>
         <hr />
@@ -64,7 +64,15 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(
+        linkText: "Volver a la factura",
+        actionName: "Edit",
+        controllerName: "Factura",
+        routeValues: new
+        {
+            id = ViewBag.FacturaId
+        },
+        htmlAttributes: null)
 </div>
 
 @section Scripts {

@@ -8,9 +8,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Concesoft.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Concesoft.Controllers
 {
+    [Authorize]
     public class FacturaController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -18,7 +20,10 @@ namespace Concesoft.Controllers
         // GET: Factura
         public async Task<ActionResult> Index()
         {
-            var facturaModels = db.FacturaModels.Include(f => f.ClienteModels).Include(f => f.UsuarioModels);
+            var facturaModels = db.FacturaModels
+                .Include(f => f.ClienteModels)
+                .Include(x => x.ApplicationUser);            
+
             return View(await facturaModels.ToListAsync());
         }
 
@@ -41,7 +46,13 @@ namespace Concesoft.Controllers
         public ActionResult Create()
         {
             ViewBag.ClienteId = new SelectList(db.ClienteModels, "ClienteId", "Nombre");
-            ViewBag.UsuarioId = new SelectList(db.UsuarioModels, "UsuarioId", "Nombre");
+            ViewBag.UsuarioId = new SelectList(db.Users, "Id", "Nombre");
+
+            var articulos = db.RepuestoAccesorioModels;
+            var vehiculos = db.VehiculoModels;
+            ViewData["articulos"] = articulos;
+            ViewData["vehiculos"] = vehiculos;
+
             return View();
         }
 
@@ -52,16 +63,12 @@ namespace Concesoft.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,UsuarioId,ClienteId,ValorTotal")] FacturaModels facturaModels)
         {
-            if (ModelState.IsValid)
-            {
-                db.FacturaModels.Add(facturaModels);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+            facturaModels.UsuarioId = User.Identity.GetUserId();
+            facturaModels.ValorTotal = 0;
 
-            ViewBag.ClienteId = new SelectList(db.ClienteModels, "ClienteId", "Nombre", facturaModels.ClienteId);
-            ViewBag.UsuarioId = new SelectList(db.UsuarioModels, "UsuarioId", "Nombre", facturaModels.UsuarioId);
-            return View(facturaModels);
+            db.FacturaModels.Add(facturaModels);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Edit/" + facturaModels.Id);
         }
 
         // GET: Factura/Edit/5
@@ -77,7 +84,6 @@ namespace Concesoft.Controllers
                 return HttpNotFound();
             }
             ViewBag.ClienteId = new SelectList(db.ClienteModels, "ClienteId", "Nombre", facturaModels.ClienteId);
-            ViewBag.UsuarioId = new SelectList(db.UsuarioModels, "UsuarioId", "Nombre", facturaModels.UsuarioId);
             return View(facturaModels);
         }
 
@@ -95,7 +101,6 @@ namespace Concesoft.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.ClienteId = new SelectList(db.ClienteModels, "ClienteId", "Nombre", facturaModels.ClienteId);
-            ViewBag.UsuarioId = new SelectList(db.UsuarioModels, "UsuarioId", "Nombre", facturaModels.UsuarioId);
             return View(facturaModels);
         }
 
