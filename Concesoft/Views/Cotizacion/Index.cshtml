@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Concesoft.Models.CotizacionModels>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ClienteModels.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApplicationUser.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValorTotal)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClienteModels.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApplicationUser.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ValorTotal)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

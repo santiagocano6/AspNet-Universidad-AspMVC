@@ -1,0 +1,73 @@
+﻿@model Concesoft.Models.DetalleCotizacionModels
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>DetalleCotizacionModels</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RepuestoAccesorioModels.NombreArticulo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RepuestoAccesorioModels.NombreArticulo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VehiculoModels.NombreVehiculo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VehiculoModels.NombreVehiculo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CotizacionId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CotizacionId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cantidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cantidad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ValorTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ValorTotal)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()){
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink(
+                linkText: "Volver a la Cotizacion",
+                actionName: "Edit",
+                controllerName: "Cotizacion",
+                routeValues: new
+                {
+                    id = Model.CotizacionId
+                },
+                htmlAttributes: null)
+        </div>
+    }
+</div>

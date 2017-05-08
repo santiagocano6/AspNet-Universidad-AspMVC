@@ -170,7 +170,9 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\DetalleCotizacionController .cs" />
     <Compile Include="Controllers\DetalleFacturaController.cs" />
+    <Compile Include="Controllers\CotizacionController.cs" />
     <Compile Include="Controllers\FacturaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -304,6 +306,17 @@
     <Content Include="Views\Factura\Edit.cshtml" />
     <Content Include="Views\Factura\Index.cshtml" />
     <Content Include="Views\DetalleFactura\_ArticulosFactura.cshtml" />
+    <Content Include="Views\DetalleCotizacion\_ArticulosCotizacion.cshtml" />
+    <Content Include="Views\DetalleCotizacion\Create.cshtml" />
+    <Content Include="Views\DetalleCotizacion\Delete.cshtml" />
+    <Content Include="Views\DetalleCotizacion\Details.cshtml" />
+    <Content Include="Views\DetalleCotizacion\Edit.cshtml" />
+    <Content Include="Views\DetalleCotizacion\Index.cshtml" />
+    <Content Include="Views\Cotizacion\Create.cshtml" />
+    <Content Include="Views\Cotizacion\Delete.cshtml" />
+    <Content Include="Views\Cotizacion\Details.cshtml" />
+    <Content Include="Views\Cotizacion\Edit.cshtml" />
+    <Content Include="Views\Cotizacion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
