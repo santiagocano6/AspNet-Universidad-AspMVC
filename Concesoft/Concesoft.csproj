@@ -205,6 +205,10 @@
     <Compile Include="Migrations\201705072217211_5.Designer.cs">
       <DependentUpon>201705072217211_5.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705082347346_6.cs" />
+    <Compile Include="Migrations\201705082347346_6.Designer.cs">
+      <DependentUpon>201705082347346_6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ClienteModels.cs" />
@@ -212,6 +216,7 @@
     <Compile Include="Models\FacturaModels.cs" />
     <Compile Include="Models\CotizacionModels.cs" />
     <Compile Include="Models\DetalleFacturaModels.cs" />
+    <Compile Include="Models\General.cs" />
     <Compile Include="Models\VehiculoModels.cs" />
     <Compile Include="Models\RepuestoAccesorioModels.cs" />
     <Compile Include="Models\UsuarioModels.cs" />
@@ -347,6 +352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705072217211_5.resx">
       <DependentUpon>201705072217211_5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705082347346_6.resx">
+      <DependentUpon>201705082347346_6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

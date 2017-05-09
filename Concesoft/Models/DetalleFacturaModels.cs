@@ -14,14 +14,12 @@ namespace Concesoft.Models
         public int FacturaId { get; set; }
         public virtual FacturaModels FacturaModels { get; set; }
 
-        [Required]
         [Display(Name = "Vehículo")]
-        public int VehiculoId { get; set; }
+        public int? VehiculoId { get; set; }
         public virtual VehiculoModels VehiculoModels { get; set; }
 
-        [Required]
         [Display(Name = "Repuesto o accesorio")]
-        public int RepuestoAccesorioId { get; set; }
+        public int? RepuestoAccesorioId { get; set; }
         public virtual RepuestoAccesorioModels RepuestoAccesorioModels { get; set; }
 
         [Required]
@@ -31,5 +29,8 @@ namespace Concesoft.Models
         [Required]
         [Display(Name = "Valor total")]
         public decimal ValorTotal { get; set; }
+
+        [NotMapped]
+        public General.TipoArticulo TipoArticulo { get; set; }
     }
 }

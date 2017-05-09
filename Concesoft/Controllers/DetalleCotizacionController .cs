@@ -48,6 +48,7 @@ namespace Concesoft.Controllers
             ViewBag.CotizacionId = CotizacionId;
             ViewBag.RepuestoAccesorioId = new SelectList(db.RepuestoAccesorioModels, "RepuestoAccesorioId", "NombreArticulo");
             ViewBag.VehiculoId = new SelectList(db.VehiculoModels, "VehiculoId", "NombreVehiculo");
+
             return View();
         }
 
@@ -56,11 +57,38 @@ namespace Concesoft.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,CotizacionId,VehiculoId,RepuestoAccesorioId,Cantidad,ValorTotal")] DetalleCotizacionModels detalleCotizacionModels)
+        public async Task<ActionResult> Create([Bind(Include = "Id,CotizacionId,VehiculoId,RepuestoAccesorioId,Cantidad,TipoArticulo")] DetalleCotizacionModels detalleCotizacionModels)
         {
             if (ModelState.IsValid)
             {
+                if (detalleCotizacionModels.TipoArticulo == General.TipoArticulo.Vehiculo)
+                {
+                    detalleCotizacionModels.RepuestoAccesorioId = null;
+                    var vehiculo = db.VehiculoModels.Find(detalleCotizacionModels.VehiculoId);
+                    detalleCotizacionModels.ValorTotal = detalleCotizacionModels.Cantidad * vehiculo.Valor;
+                }
+                else
+                {
+                    detalleCotizacionModels.VehiculoId = null;
+                    var repuestoAccesorio = db.RepuestoAccesorioModels.Find(detalleCotizacionModels.RepuestoAccesorioId);
+                    detalleCotizacionModels.ValorTotal = detalleCotizacionModels.Cantidad * repuestoAccesorio.Valor;
+                }
+
                 db.DetalleCotizacionModels.Add(detalleCotizacionModels);
+
+                var articulos = db.DetalleFacturaModels.Where(x => x.FacturaId == detalleCotizacionModels.CotizacionId);
+
+                FacturaModels cotizacion = db.FacturaModels.Find(detalleCotizacionModels.CotizacionId);
+                if (articulos.Count() > 0)
+                {
+                    var sumaArticulos = articulos.Sum(z => z.ValorTotal);
+                    cotizacion.ValorTotal = sumaArticulos + detalleCotizacionModels.ValorTotal;
+                }
+                else
+                    cotizacion.ValorTotal = detalleCotizacionModels.ValorTotal;
+
+                db.Entry(cotizacion).State = EntityState.Modified;
+
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -93,11 +121,42 @@ namespace Concesoft.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,CotizacionId,VehiculoId,RepuestoAccesorioId,Cantidad,ValorTotal")] DetalleCotizacionModels detalleCotizacionModels)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,CotizacionId,VehiculoId,RepuestoAccesorioId,Cantidad,TipoArticulo")] DetalleCotizacionModels detalleCotizacionModels)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(detalleCotizacionModels).State = EntityState.Modified;
+                var guardado = db.DetalleCotizacionModels.Find(detalleCotizacionModels.Id);
+                if (detalleCotizacionModels.Cantidad > 0)
+                    guardado.Cantidad = detalleCotizacionModels.Cantidad;
+
+                if (detalleCotizacionModels.TipoArticulo == General.TipoArticulo.Vehiculo)
+                {
+                    detalleCotizacionModels.RepuestoAccesorioId = null;
+                    var vehiculo = db.VehiculoModels.Find((detalleCotizacionModels.VehiculoId == null) ? guardado.VehiculoId : detalleCotizacionModels.VehiculoId);
+                    guardado.ValorTotal = detalleCotizacionModels.Cantidad * vehiculo.Valor;
+                }
+                else
+                {
+                    detalleCotizacionModels.VehiculoId = null;
+                    var repuestoAccesorio = db.RepuestoAccesorioModels.Find(detalleCotizacionModels.RepuestoAccesorioId);
+                    guardado.ValorTotal = detalleCotizacionModels.Cantidad * repuestoAccesorio.Valor;
+                }
+
+                db.Entry(guardado).State = EntityState.Modified;
+
+                var articulos = db.DetalleFacturaModels.Where(x => x.FacturaId == detalleCotizacionModels.CotizacionId && x.Id != guardado.Id);
+
+                FacturaModels cotizacion = db.FacturaModels.Find(detalleCotizacionModels.CotizacionId);
+                if (articulos.Count() > 0)
+                {
+                    var sumaArticulos = articulos.Sum(z => z.ValorTotal);
+                    cotizacion.ValorTotal = sumaArticulos + detalleCotizacionModels.ValorTotal;
+                }
+                else
+                    cotizacion.ValorTotal = detalleCotizacionModels.ValorTotal;
+
+                db.Entry(cotizacion).State = EntityState.Modified;
+
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -130,6 +189,20 @@ namespace Concesoft.Controllers
             DetalleCotizacionModels detalleCotizacionModels = await db.DetalleCotizacionModels.FindAsync(id);
             int CotizacionId = detalleCotizacionModels.CotizacionId;
             db.DetalleCotizacionModels.Remove(detalleCotizacionModels);
+
+            var articulos = db.DetalleFacturaModels.Where(x => x.FacturaId == detalleCotizacionModels.CotizacionId && x.Id != id);
+
+            FacturaModels cotizacion = db.FacturaModels.Find(detalleCotizacionModels.CotizacionId);
+            if (articulos.Count() > 0)
+            {
+                var sumaArticulos = articulos.Sum(z => z.ValorTotal);
+                cotizacion.ValorTotal = sumaArticulos + detalleCotizacionModels.ValorTotal;
+            }
+            else
+                cotizacion.ValorTotal = detalleCotizacionModels.ValorTotal;
+
+            db.Entry(cotizacion).State = EntityState.Modified;
+
             await db.SaveChangesAsync();
             return RedirectToAction("Edit/" + detalleCotizacionModels.CotizacionId, "Cotizacion");
         }

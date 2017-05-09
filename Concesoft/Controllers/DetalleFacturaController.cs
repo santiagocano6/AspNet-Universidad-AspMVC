@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Concesoft.Models;
 using System.Collections;
 using System.Linq;
+using System;
 
 namespace Concesoft.Controllers
 {
@@ -48,6 +49,7 @@ namespace Concesoft.Controllers
             ViewBag.FacturaId = facturaId;
             ViewBag.RepuestoAccesorioId = new SelectList(db.RepuestoAccesorioModels, "RepuestoAccesorioId", "NombreArticulo");
             ViewBag.VehiculoId = new SelectList(db.VehiculoModels, "VehiculoId", "NombreVehiculo");
+
             return View();
         }
 
@@ -56,11 +58,38 @@ namespace Concesoft.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,FacturaId,VehiculoId,RepuestoAccesorioId,Cantidad,ValorTotal")] DetalleFacturaModels detalleFacturaModels)
+        public async Task<ActionResult> Create([Bind(Include = "Id,FacturaId,VehiculoId,RepuestoAccesorioId,Cantidad,TipoArticulo")] DetalleFacturaModels detalleFacturaModels)
         {
             if (ModelState.IsValid)
             {
+                if (detalleFacturaModels.TipoArticulo == General.TipoArticulo.Vehiculo)
+                {
+                    detalleFacturaModels.RepuestoAccesorioId = null;
+                    var vehiculo = db.VehiculoModels.Find(detalleFacturaModels.VehiculoId);
+                    detalleFacturaModels.ValorTotal = detalleFacturaModels.Cantidad * vehiculo.Valor;
+                }
+                else
+                {
+                    detalleFacturaModels.VehiculoId = null;
+                    var repuestoAccesorio = db.RepuestoAccesorioModels.Find(detalleFacturaModels.RepuestoAccesorioId);
+                    detalleFacturaModels.ValorTotal = detalleFacturaModels.Cantidad * repuestoAccesorio.Valor;
+                }
+
                 db.DetalleFacturaModels.Add(detalleFacturaModels);
+
+                var articulos = db.DetalleFacturaModels.Where(x => x.FacturaId == detalleFacturaModels.FacturaId);
+
+                FacturaModels factura = db.FacturaModels.Find(detalleFacturaModels.FacturaId);
+                if(articulos.Count() > 0)
+                {
+                    var sumaArticulos = articulos.Sum(z => z.ValorTotal);
+                    factura.ValorTotal = sumaArticulos + detalleFacturaModels.ValorTotal;
+                }
+                else
+                    factura.ValorTotal = detalleFacturaModels.ValorTotal;
+
+                db.Entry(factura).State = EntityState.Modified;
+
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -93,11 +122,42 @@ namespace Concesoft.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,FacturaId,VehiculoId,RepuestoAccesorioId,Cantidad,ValorTotal")] DetalleFacturaModels detalleFacturaModels)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,FacturaId,VehiculoId,RepuestoAccesorioId,Cantidad,TipoArticulo")] DetalleFacturaModels detalleFacturaModels)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(detalleFacturaModels).State = EntityState.Modified;
+                var guardado = db.DetalleFacturaModels.Find(detalleFacturaModels.Id);
+                if(detalleFacturaModels.Cantidad > 0)
+                    guardado.Cantidad = detalleFacturaModels.Cantidad;
+
+                if (detalleFacturaModels.TipoArticulo == General.TipoArticulo.Vehiculo)
+                {
+                    detalleFacturaModels.RepuestoAccesorioId = null;
+                    var vehiculo = db.VehiculoModels.Find((detalleFacturaModels.VehiculoId == null) ? guardado.VehiculoId : detalleFacturaModels.VehiculoId);
+                    guardado.ValorTotal = detalleFacturaModels.Cantidad * vehiculo.Valor;
+                }
+                else
+                {
+                    detalleFacturaModels.VehiculoId = null;
+                    var repuestoAccesorio = db.RepuestoAccesorioModels.Find(detalleFacturaModels.RepuestoAccesorioId);
+                    guardado.ValorTotal = detalleFacturaModels.Cantidad * repuestoAccesorio.Valor;
+                }
+
+                db.Entry(guardado).State = EntityState.Modified;
+
+                var articulos = db.DetalleFacturaModels.Where(x => x.FacturaId == guardado.FacturaId && x.Id != guardado.Id);
+                
+                FacturaModels factura = db.FacturaModels.Find(guardado.FacturaId);
+                if (articulos.Count() > 0)
+                {
+                    var sumaArticulos = articulos.Sum(z => z.ValorTotal);
+                    factura.ValorTotal = sumaArticulos + guardado.ValorTotal;
+                }
+                else
+                    factura.ValorTotal = guardado.ValorTotal;
+
+                db.Entry(factura).State = EntityState.Modified;
+
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -130,6 +190,20 @@ namespace Concesoft.Controllers
             DetalleFacturaModels detalleFacturaModels = await db.DetalleFacturaModels.FindAsync(id);
             int facturaId = detalleFacturaModels.FacturaId;
             db.DetalleFacturaModels.Remove(detalleFacturaModels);
+
+            var articulos = db.DetalleFacturaModels.Where(x => x.FacturaId == detalleFacturaModels.FacturaId && x.Id != id);
+
+            FacturaModels factura = db.FacturaModels.Find(detalleFacturaModels.FacturaId);
+            if (articulos.Count() > 0)
+            {
+                var sumaArticulos = articulos.Sum(z => z.ValorTotal);
+                factura.ValorTotal = sumaArticulos;
+            }
+            else
+                factura.ValorTotal = 0;
+
+            db.Entry(factura).State = EntityState.Modified;
+
             await db.SaveChangesAsync();
             return RedirectToAction("Edit/" + detalleFacturaModels.FacturaId, "Factura");
         }
